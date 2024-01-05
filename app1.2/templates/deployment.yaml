@@ -3,10 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: {{ .Values.name }}
-    {{- if .Values.isFrontend }}
-    k8s.kuboard.cn/layer: web
-    k8s.kuboard.cn/name: {{ .Release.Name }}
-    {{- end }}
   name: {{ .Release.Name }}
   namespace: {{ .Values.nameSpace | default .Release.Namespace | quote }}
 spec:
@@ -44,10 +40,9 @@ spec:
         {{- if not .Values.isFrontend }}
         - name: JAVA_OPTS
           value: -Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }}
-        {{- else }}
-        - name: LANG
-          value: C.UTF-8
-        {{- end}}
+        - name: JAVA_HOME
+          value: /usr/local/openjdk-8
+        {{- end }}
         {{- if .Values.env }}
         {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 8 }}
         {{- end }}
@@ -108,10 +103,6 @@ spec:
       {{- if .Values.image.pullSecret }}
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret }}
-      {{- end }}
-      {{- if .Values.hostAliases }}
-      hostAliases:
-      {{- include "common.tplvalues.render" ( dict "value" .Values.hostAliases "context" $) | nindent 6 }}
       {{- end }}
       restartPolicy: Always
       {{- if .Values.mount.volumes }}

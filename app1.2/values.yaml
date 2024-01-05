@@ -48,9 +48,11 @@ mount:
 env:
   - name: TZ
     value: Asia/Shanghai
+  - name: LANG
+    value: C.UTF-8
     
 # jvm参数(只有后端可用)
-JAVA_OPTS: -XX:+UseContainerSupport -XX:MaxRAMPercentage=70.0 -Dfile.encoding=UTF-8
+JAVA_OPTS: -XX:+UseContainerSupport -XX:MaxRAMPercentage=70.0 
 
 # pod注解
 podAnnotations:
@@ -102,13 +104,6 @@ resources:
   limits: 
     # cpu: 200m
     memory: 1Gi
-
-# 主机别名
-hostAliases:
-  # - ip: 172.16.21.182
-  #   hostnames:
-  #     - platforms.genericszz.cn
-  #     - simulation-private-v2.genericszz.cn
 
 # 探针(仅后端生效)
 probe:

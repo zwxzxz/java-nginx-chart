@@ -1,5 +1,5 @@
 # 是否前端应用(是输入true)
-isFrontend: 1
+isFrontend: 
 # 应用名(必填!!!)
 name: vbooster-gateway
 # 镜像信息
@@ -10,10 +10,9 @@ image:
   repository: platforms/vbooster-gateway
 
 # 创建service(关注应用是否有需求,一般只需gateway和前端需要)
-createService: 
+createService: 1
 
 containerPort: 7400
-
 
 # 挂载
 mount:
@@ -31,4 +30,4 @@ mount:
 
 # 自动扩缩容
 autoscaling:
-  enabled: 
+  enabled: 1

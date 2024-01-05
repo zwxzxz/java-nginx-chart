@@ -1,39 +1,5 @@
 # Deployment Chart更新内容
 
-## 1.4.0(待更新)
-
-- 节点调度
-- 容忍
-- 亲和
-- 优化探针：前端tcp:80保活、后端保活使用tcp（单服务：保活http  ,集群：保活tcp+就绪http）
-- 链路追踪
-
-## 1.3.0
-
-### Deployment
-
-- 前端应用置于Kuboard展现层：Kuboard版本最好是 `v3.x`
-
-- 主机别名：支持容器 `/etc/hosts` 添加映射
-
-- 环境变量优化：
-
-  1. 后端删除 `JAVA_HOME` 和 `LANG` 环境变量
-
-     ```yaml
-     - name: JAVA_HOME
-       value: /usr/local/openjdk-8
-     - name: LANG
-       value: C.UTF-8
-     ```
-
-  2. 前端单独指定`LANG`环境变量
-
-     ```yaml
-     - name: LANG
-       value: C.UTF-8
-     ```
-
 ## 1.2.0
 
 ### Hpa
@@ -48,10 +14,6 @@
 
 - command优化：/bin/bash 替换 /bin/sh，解决容器内主进程 PID 不是 1 的问题
 - 移除请求资源 requests 内存需求，满足hpa使用 `设置请求资源与hpa只能二选一`
-
-### install.sh
-
-- 添加快速部署应用脚本
 
 ## 1.1.0
 
