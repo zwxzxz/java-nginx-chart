@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 设置变量
-chart_file="app1.3-1.3.0.tgz"
+chart_file="app1.2-1.2.0.tgz"
 release_namespace=""
 
 # 检查 release_namespace 是否为空
