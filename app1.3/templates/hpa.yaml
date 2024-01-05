@@ -1,4 +1,3 @@
-{{- if ..Values.autoscaling }}
 {{- if .Values.autoscaling.enabled}}
 apiVersion: {{ include "common.capabilities.hpa.apiVersion" ( dict "context" $ ) }}
 kind: HorizontalPodAutoscaler
@@ -25,5 +24,4 @@ spec:
         averageUtilization: {{ .Values.autoscaling.targetMemory }}
       {{- end }}
   {{- end }}
-{{- end}}
 {{- end}}
