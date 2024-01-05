@@ -1,0 +1,13 @@
+apiVersion: v2
+name: app1.4
+version: 1.4.0
+
+description: nginx服务或者jar包的Helm chart
+type: application
+keywords:
+  - spring boot
+  - java
+  - Vue
+  - nginx
+maintainers:
+- name: zwx
