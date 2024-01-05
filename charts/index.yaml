@@ -1,10 +1,27 @@
 apiVersion: v1
 entries:
+  app1.3:
+  - apiVersion: v2
+    created: "2024-01-05T12:30:02.750109545+08:00"
+    description: nginx服务 或者 jar包 的Helm chart
+    digest: 1470f6af00ddd592b10e1a3c1f27e4c0a5b366c18e580008940dba3ca38af30b
+    keywords:
+    - spring boot
+    - java
+    - Vue
+    - nginx
+    maintainers:
+    - name: zwx
+    name: app1.3
+    type: application
+    urls:
+    - app1.3-1.3.0.tgz
+    version: 1.3.0
   deployment:
   - apiVersion: v2
-    created: "2024-01-05T11:36:10.276158695+08:00"
+    created: "2024-01-05T12:30:02.751443803+08:00"
     description: nginx服务 或者 jar包 的Helm chart
-    digest: 3d469389fd4c2a980da7870d57e6bf3a3d4a8678cc569706866966234fc6dfa8
+    digest: dac1beba288b975fe49445abb27547bd67a68da22e5b168139ebb1d54275d8a8
     keywords:
     - spring boot
     - java
@@ -17,4 +34,4 @@ entries:
     urls:
     - deployment-1.3.0.tgz
     version: 1.3.0
-generated: "2024-01-05T11:36:10.274327324+08:00"
+generated: "2024-01-05T12:30:02.748532464+08:00"

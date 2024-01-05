@@ -1,5 +1,5 @@
 apiVersion: v2
-name: deployment
+name: app1.3
 version: 1.3.0
 
 description: nginx服务 或者 jar包 的Helm chart
