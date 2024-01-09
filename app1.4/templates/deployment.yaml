@@ -46,7 +46,7 @@ spec:
           value: "-Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }} {{ if .Values.skyWalking.enabled -}}-javaagent:/skywalking/agent/skywalking-agent.jar{{- end -}}"
         {{- if .Values.skyWalking.enabled }}
         - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-          value: {{ .Values.skyWalking.opaAdd }}
+          value: {{ .Values.skyWalking.oapAdd }}
         - name: SW_AGENT_NAME
           value: {{ .Release.Namespace }}::{{ .Values.name }}
         - name: SW_AGENT_INSTANCE_NAME
@@ -117,14 +117,35 @@ spec:
         {{- end }}
 
       {{- if .Values.image.pullSecret }}
+      # 镜像拉取凭证
       imagePullSecrets:
       - name: {{ .Values.image.pullSecret }}
       {{- end }}
       {{- if .Values.hostAliases }}
+      # 主机别名
       hostAliases:
       {{- include "common.tplvalues.render" ( dict "value" .Values.hostAliases "context" $) | nindent 6 }}
       {{- end }}
-      restartPolicy: Always
+      {{- if .Values.tolerations }}
+      # 容忍
+      tolerations: {{- include "common.tplvalues.render" (dict "value" .Values.tolerations "context" $) | nindent 6 }}
+      {{- end }}
+
+      {{- if .Values.affinity }}
+      # 亲和
+      affinity: {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      # 根据节点标签部署服务
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end}}
+      {{- if .Values.nodeName }}
+      # 根据节点名部署服务(设置了请关闭 节点亲和 和 节点标签选择部署节点)
+      nodeName: {{ .Values.nodeName }}
+      {{- end }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      restartPolicy: {{ .Values.restartPolicy }}
+      hostNetwork: {{ .Values.hostNetwork }}
       {{- if .Values.mount.volumes }}
       volumes:
       {{- include "common.tplvalues.render" ( dict "value" .Values.mount.volumes "context" $) | nindent 6 }}

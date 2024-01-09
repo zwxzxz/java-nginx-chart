@@ -32,3 +32,6 @@ mount:
 # 自动扩缩容
 autoscaling:
   enabled: 
+
+skyWalking:
+  enabled: 

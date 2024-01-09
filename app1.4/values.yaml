@@ -118,11 +118,11 @@ probe:
   # 容器启动检查探针
   startupProbe:
     enabled: true
-    #100秒启动时间
+    #150秒启动时间
     httpGet:
       path: /actuator/health
       port: http
-    failureThreshold: 20
+    failureThreshold: 30
     periodSeconds: 4
 
   # 容器存活检查探针
@@ -205,10 +205,63 @@ autoscaling:
   # 最小副本数
   minReplicas: 1
   # 最大副本数
-  maxReplicas: 5
+  maxReplicas: 3
   # 内存指标值
   targetMemory: 70
 
+# 链路追踪
 skyWalking:
-  enabled: true
-  opaAdd: 172.16.21.127:11800
+  # 开关
+  enabled: false
+  # skyWalking-OAP地址
+  oapAdd: 172.16.21.127:11800
+
+# 容忍
+tolerations:
+  # - effect: NoSchedule
+  #   key: node-role.kubernetes.io/master
+  #   operator: Exists
+
+# 亲和
+affinity:
+  # 节点亲和
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: node-role.kubernetes.io/control-plane
+  #             operator: In
+  #             values:
+  #               - aa
+  # pod间亲和
+  # podAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     - labelSelector:
+  #         matchLabels:
+  #           app: vbooster-gateway
+  #       topologyKey: kubernetes.io/hostname
+  # pod间反亲和
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     - labelSelector:
+  #         matchLabels:
+  #           app: vbooster-gateway
+  #       topologyKey: kubernetes.io/hostname
+
+# 节点标签选择部署节点
+nodeSelector:
+  # kubernetes.io/os: linux
+  # node-role.kubernetes.io/control-plane: ''
+
+# 节点名称选择部署节点(设置了请关闭 节点亲和 和 节点标签选择部署节点)
+nodeName: 
+
+# 重启策略
+restartPolicy: Always
+
+# 使用主机网络
+hostNetwork: false
+
+# DNS策略(主机网络使用ClusterFirstWithHostNet)
+dnsPolicy: ClusterFirst
+
