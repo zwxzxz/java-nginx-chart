@@ -1,13 +1,5 @@
 # Deployment Chart更新内容
 
-## 1.4.0(待更新)
-
-- 节点调度
-- 容忍
-- 亲和
-- 优化探针：前端tcp:80保活、后端保活使用tcp（单服务：保活http  ,集群：保活tcp+就绪http）
-- 链路追踪
-
 ## 1.3.0
 
 ### Deployment
@@ -164,8 +156,9 @@ helm list -n 命名空间
 | service.externalTrafficPolicy                                |                                                              | 外部流量策略                                     |
 | service.loadBalancerSourceRanges                             |                                                              | 限制可以访问负载均衡器的源IP地址段               |
 | service.loadBalancerIP                                       |                                                              | 负载均衡IP地址                                   |
-| resources.requests                                           | cpu: 30m<br />memory: 256Mi                                  | 请求资源                                         |
+| resources.requests                                           | cpu: 30m                                                     | 请求资源                                         |
 | resources.limits                                             | memory: 1Gi                                                  | 限制资源(前端不生效)                             |
+| hostAliases                                                  |                                                              | 主机别名                                         |
 | probe.enabled                                                | true                                                         | 探针总开关                                       |
 | probe.startupProbe.enabled                                   | true                                                         | 启动探针开关                                     |
 | probe.startupProbe.内容                                      | httpGet:<br /> path: /actuator/health<br />  port: http<br />failureThreshold: 24<br />periodSeconds: 4 | 启动探针内容(前端不生效)                         |
