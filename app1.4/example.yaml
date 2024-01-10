@@ -1,18 +1,18 @@
 # 是否前端应用(是输入true)
 isFrontend: 
 # 应用名(必填!!!)
-name: vbooster-gateway
+name: vbooster-auth
 # 镜像信息
 image:
   # 仓库
   registry: 172.16.21.107:6007
   # 镜像组(必填!!!)
-  repository: platforms/vbooster-gateway
+  repository: platforms/vbooster-auth
 
 # 创建service(关注应用是否有需求,一般只需gateway和前端需要)
 createService: 
 
-containerPort: 7400
+containerPort: 
 
 
 # 挂载
@@ -33,5 +33,7 @@ mount:
 autoscaling:
   enabled: 
 
+# 链路追踪
 skyWalking:
   enabled: 
+  oapAdd: 

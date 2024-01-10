@@ -136,14 +136,14 @@ probe:
     periodSeconds: 10
   
   # 容器就绪检查探针,3次失败Service停止分发
-  # readinessProbe:
-  #   enabled: true
-  #   #1分钟4次
-  #   httpGet:
-  #     path: /actuator/health
-  #     port: http
-  #   timeoutSeconds: 5
-  #   periodSeconds: 10
+  readinessProbe:
+    enabled: false
+    #1分钟4次
+    httpGet:
+      path: /actuator/health
+      port: http
+    timeoutSeconds: 5
+    periodSeconds: 10
   
 
   # 自定义容器启动检查探针
@@ -174,7 +174,7 @@ probe:
     #         exit 0
     #       fi
     # failureThreshold: 3
-    # initialDelaySeconds: 3000
+    # initialDelaySeconds: 30
     # periodSeconds: 10
     # successThreshold: 1
     # timeoutSeconds: 1
@@ -214,7 +214,7 @@ skyWalking:
   # 开关
   enabled: false
   # skyWalking-OAP地址
-  oapAdd: 172.16.21.127:11800
+  oapAdd: 
 
 # 容忍
 tolerations:
@@ -265,3 +265,19 @@ hostNetwork: false
 # DNS策略(主机网络使用ClusterFirstWithHostNet)
 dnsPolicy: ClusterFirst
 
+# dns配置
+dnsConfig:
+  # nameservers:
+  #   - 114.114.114.114
+  # searches:
+  #   - ns1.svc.cluster-domain.example
+  #   - my.dns.search.suffix
+  # options:
+  #   - name: edns0
+
+# 历史版本数量
+revisionHistoryLimit: 10
+
+# 更新策略
+strategy:
+  # type: Recreate

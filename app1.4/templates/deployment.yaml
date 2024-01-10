@@ -11,9 +11,13 @@ metadata:
   namespace: {{ .Values.nameSpace | default .Release.Namespace | quote }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
+  {{- if .Values.strategy }}
+  strategy: {{- include "common.tplvalues.render" ( dict "value" .Values.strategy "context" $) | nindent 4 }}
+  {{- end }}
   template:
     metadata:
       {{- if or (not .Values.isFrontend) .Values.podAnnotations }}
@@ -43,7 +47,7 @@ spec:
         env:
         {{- if not .Values.isFrontend }}
         - name: JAVA_OPTS
-          value: "-Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }} {{ if .Values.skyWalking.enabled -}}-javaagent:/skywalking/agent/skywalking-agent.jar{{- end -}}"
+          value: -Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }} {{ if .Values.skyWalking.enabled -}}-javaagent:/skywalking/agent/skywalking-agent.jar{{- end -}}
         {{- if .Values.skyWalking.enabled }}
         - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
           value: {{ .Values.skyWalking.oapAdd }}
@@ -142,6 +146,10 @@ spec:
       {{- if .Values.nodeName }}
       # 根据节点名部署服务(设置了请关闭 节点亲和 和 节点标签选择部署节点)
       nodeName: {{ .Values.nodeName }}
+      {{- end }}
+      {{- if .Values.dnsConfig }}
+      # DNS配置
+      dnsConfig: {{- include "common.tplvalues.render" (dict "value" .Values.dnsConfig "context" $) | nindent 8 }}
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       restartPolicy: {{ .Values.restartPolicy }}
