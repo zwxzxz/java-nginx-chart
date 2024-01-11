@@ -47,7 +47,7 @@ spec:
         env:
         {{- if not .Values.isFrontend }}
         - name: JAVA_OPTS
-          value: -Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }} {{ if .Values.skyWalking.enabled -}}-javaagent:/skywalking/agent/skywalking-agent.jar{{- end -}}
+          value: -Dserver.port={{ .Values.containerPort | default 8080 }} {{ .Values.JAVA_OPTS }} {{ if .Values.skyWalking.enabled -}}-javaagent:{{ .Values.skyWalking.jarPath}}{{- end -}}
         {{- if .Values.skyWalking.enabled }}
         - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
           value: {{ .Values.skyWalking.oapAdd }}
@@ -115,9 +115,15 @@ spec:
         {{- end }}
         {{- end }}
 
-        {{- if .Values.mount.volumeMounts }}
+        {{- if or .Values.mount.volumeMounts .Values.skyWalking.enabled }}
         volumeMounts:
+        {{- if .Values.mount.volumeMounts }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.mount.volumeMounts "context" $) | nindent 8 }}
+        {{- end }}
+        {{- if .Values.skyWalking.enabled }}
+        - name: skywalking-agent
+          mountPath: /skywalking
+        {{- end }}
         {{- end }}
 
       {{- if .Values.image.pullSecret }}
@@ -154,7 +160,14 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy }}
       restartPolicy: {{ .Values.restartPolicy }}
       hostNetwork: {{ .Values.hostNetwork }}
-      {{- if .Values.mount.volumes }}
+      {{- if or .Values.mount.volumes .Values.skyWalking.enabled }}
       volumes:
+      {{- if .Values.mount.volumes }}
       {{- include "common.tplvalues.render" ( dict "value" .Values.mount.volumes "context" $) | nindent 6 }}
+      {{- end }}
+      {{- if .Values.skyWalking.enabled }}
+      - name: skywalking-agent
+        hostPath:
+          path: /skywalking
+      {{- end }}
       {{- end }}

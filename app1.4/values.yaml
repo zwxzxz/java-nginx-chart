@@ -215,6 +215,8 @@ skyWalking:
   enabled: false
   # skyWalking-OAP地址
   oapAdd: 
+  # agent.jar地址
+  jarPath: /skywalking/skywalking-agent/skywalking-agent.jar
 
 # 容忍
 tolerations:

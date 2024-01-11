@@ -12,7 +12,7 @@ image:
 # 创建service(关注应用是否有需求,一般只需gateway和前端需要)
 createService: 
 
-containerPort: 
+containerPort: 7401
 
 
 # 挂载
@@ -33,7 +33,9 @@ mount:
 autoscaling:
   enabled: 
 
+nodeName: k8s-node2
+
 # 链路追踪
 skyWalking:
-  enabled: 
-  oapAdd: 
+  enabled: 1
+  oapAdd: 172.16.21.127:11800
