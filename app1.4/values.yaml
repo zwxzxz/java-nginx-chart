@@ -110,12 +110,12 @@ hostAliases:
   #     - platforms.genericszz.cn
   #     - simulation-private-v2.genericszz.cn
 
-# 探针(仅后端生效)
+# 探针
 probe:
-  # 总开关(关了所有不可用)
-  enabled: true
-
   backend:
+    # 后端总开关(关了所有不可用)
+    enabled: true
+
     # 容器启动检查探针
     startupProbe:
       enabled: true
@@ -147,6 +147,9 @@ probe:
       periodSeconds: 15
 
   frontend:
+    # 前端总开关(关了所有不可用)
+    enabled: true
+
     # 容器启动检查探针
     startupProbe:
       enabled: true

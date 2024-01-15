@@ -87,15 +87,15 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.extraContainerPort "context" $) | nindent 8 }}
         {{- end }}
 
-        {{- if and .Values.probe .Values.probe.enabled }}
+        {{- if .Values.probe }}
         {{- with .Values.probe }}
         {{- if .customStartupProbe }}
         # 容器启动检查探针
         startupProbe: {{- include "common.tplvalues.render" (dict "value" .customStartupProbe "context" $) | nindent 10 }}
-        {{- else if and .backend.startupProbe .backend.startupProbe.enabled (not $.Values.isFrontend) }}
+        {{- else if and .backend.enabled .backend.startupProbe .backend.startupProbe.enabled (not $.Values.isFrontend) }}
         # 后端容器启动检查探针
         startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.startupProbe "enabled") "context" $) | nindent 10 }}
-        {{- else if and .frontend.startupProbe .frontend.startupProbe.enabled $.Values.isFrontend }}
+        {{- else if and .frontend.enabled .frontend.startupProbe .frontend.startupProbe.enabled $.Values.isFrontend }}
         # 前端容器启动检查探针
         startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.startupProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
@@ -103,10 +103,10 @@ spec:
         {{- if .customLivenessProbe }}
         # 容器存活检查探针
         livenessProbe: {{- include "common.tplvalues.render" (dict "value" .customLivenessProbe "context" $) | nindent 10 }}
-        {{- else if and .backend.livenessProbe .backend.livenessProbe.enabled (not $.Values.isFrontend) }}
+        {{- else if and .backend.enabled .backend.livenessProbe .backend.livenessProbe.enabled (not $.Values.isFrontend) }}
         # 后端容器存活检查探针
         livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.livenessProbe "enabled") "context" $) | nindent 10 }}
-        {{- else if and .frontend.livenessProbe .frontend.livenessProbe.enabled $.Values.isFrontend }}
+        {{- else if and .frontend.enabled .frontend.livenessProbe .frontend.livenessProbe.enabled $.Values.isFrontend }}
         # 前端容器存活检查探针
         livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.livenessProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
@@ -114,10 +114,10 @@ spec:
         {{- if .customReadinessProbe }}
         # 容器就绪检查探针
         readinessProbe: {{- include "common.tplvalues.render" (dict "value" .customReadinessProbe "context" $) | nindent 10 }}
-        {{- else if and .backend.readinessProbe .backend.readinessProbe.enabled (not $.Values.isFrontend) }}
+        {{- else if and .backend.enabled .backend.readinessProbe .backend.readinessProbe.enabled (not $.Values.isFrontend) }}
         # 后端容器就绪检查探针
         readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.readinessProbe "enabled") "context" $) | nindent 10 }}
-        {{- else if and .frontend.readinessProbe .frontend.readinessProbe.enabled $.Values.isFrontend }}
+        {{- else if and .frontend.enabled .frontend.readinessProbe .frontend.readinessProbe.enabled $.Values.isFrontend }}
         # 前端容器就绪检查探针
         readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.readinessProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
