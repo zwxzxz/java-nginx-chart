@@ -1,6 +1,0 @@
-可以通过命令查看：
-kubectl get -n {{ .Release.Namespace }} pod 
-
-{{- if .Values.createService }}
-kubectl get -n {{ .Release.Namespace }} serivce
-{{- end }}
