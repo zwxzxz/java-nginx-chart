@@ -1,6 +1,6 @@
 可以通过命令查看：
-kubectl get -n {{ .Release.Namespace }} pod 
+watch kubectl get -n {{ .Release.Namespace }} deployments.apps {{ .Release.Name }}
 
 {{- if .Values.createService }}
-kubectl get -n {{ .Release.Namespace }} serivce
+kubectl get -n {{ .Release.Namespace }} services {{ .Release.Name }}
 {{- end }}

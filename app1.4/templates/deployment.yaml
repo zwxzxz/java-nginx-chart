@@ -87,40 +87,49 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.extraContainerPort "context" $) | nindent 8 }}
         {{- end }}
 
-        {{- if and .Values.probe .Values.probe.enabled (not .Values.isFrontend) }}
+        {{- if and .Values.probe .Values.probe.enabled }}
         {{- with .Values.probe }}
         {{- if .customStartupProbe }}
         # 容器启动检查探针
         startupProbe: {{- include "common.tplvalues.render" (dict "value" .customStartupProbe "context" $) | nindent 10 }}
-        {{- else if and .startupProbe .startupProbe.enabled }}
-        # 容器启动检查探针
-        startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .startupProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .backend.startupProbe .backend.startupProbe.enabled (not $.Values.isFrontend) }}
+        # 后端容器启动检查探针
+        startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.startupProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .frontend.startupProbe .frontend.startupProbe.enabled $.Values.isFrontend }}
+        # 前端容器启动检查探针
+        startupProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.startupProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
 
         {{- if .customLivenessProbe }}
         # 容器存活检查探针
         livenessProbe: {{- include "common.tplvalues.render" (dict "value" .customLivenessProbe "context" $) | nindent 10 }}
-        {{- else if and .livenessProbe .livenessProbe.enabled }}
-        # 容器存活检查探针
-        livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .livenessProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .backend.livenessProbe .backend.livenessProbe.enabled (not $.Values.isFrontend) }}
+        # 后端容器存活检查探针
+        livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.livenessProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .frontend.livenessProbe .frontend.livenessProbe.enabled $.Values.isFrontend }}
+        # 前端容器存活检查探针
+        livenessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.livenessProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
 
         {{- if .customReadinessProbe }}
         # 容器就绪检查探针
         readinessProbe: {{- include "common.tplvalues.render" (dict "value" .customReadinessProbe "context" $) | nindent 10 }}
-        {{- else if and .readinessProbe .readinessProbe.enabled }}
-        # 容器就绪检查探针
-        readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .readinessProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .backend.readinessProbe .backend.readinessProbe.enabled (not $.Values.isFrontend) }}
+        # 后端容器就绪检查探针
+        readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .backend.readinessProbe "enabled") "context" $) | nindent 10 }}
+        {{- else if and .frontend.readinessProbe .frontend.readinessProbe.enabled $.Values.isFrontend }}
+        # 前端容器就绪检查探针
+        readinessProbe: {{- include "common.tplvalues.render" (dict "value" (omit .frontend.readinessProbe "enabled") "context" $) | nindent 10 }}
         {{- end }}
         {{- end }}
         {{- end }}
 
-        {{- if or .Values.mount.volumeMounts .Values.skyWalking.enabled }}
+        {{- if or .Values.mount.volumeMounts (and .Values.skyWalking.enabled (not .Values.isFrontend)) }}
         volumeMounts:
         {{- if .Values.mount.volumeMounts }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.mount.volumeMounts "context" $) | nindent 8 }}
         {{- end }}
-        {{- if .Values.skyWalking.enabled }}
+        {{- if and .Values.skyWalking.enabled ( not .Values.isFrontend) }}
         - name: skywalking-agent
           mountPath: /skywalking
         {{- end }}
@@ -160,12 +169,12 @@ spec:
       dnsPolicy: {{ .Values.dnsPolicy }}
       restartPolicy: {{ .Values.restartPolicy }}
       hostNetwork: {{ .Values.hostNetwork }}
-      {{- if or .Values.mount.volumes .Values.skyWalking.enabled }}
+      {{- if or .Values.mount.volumes (and .Values.skyWalking.enabled (not .Values.isFrontend)) }}
       volumes:
       {{- if .Values.mount.volumes }}
       {{- include "common.tplvalues.render" ( dict "value" .Values.mount.volumes "context" $) | nindent 6 }}
       {{- end }}
-      {{- if .Values.skyWalking.enabled }}
+      {{- if and .Values.skyWalking.enabled (not .Values.isFrontend) }}
       - name: skywalking-agent
         hostPath:
           path: /skywalking

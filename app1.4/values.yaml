@@ -50,7 +50,7 @@ env:
     value: Asia/Shanghai
     
 # jvm参数(只有后端可用)
-JAVA_OPTS: -XX:+UseContainerSupport -XX:MaxRAMPercentage=70.0 -Dfile.encoding=UTF-8 
+JAVA_OPTS: -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Dfile.encoding=UTF-8 
 
 # pod注解
 podAnnotations:
@@ -115,35 +115,67 @@ probe:
   # 总开关(关了所有不可用)
   enabled: true
 
-  # 容器启动检查探针
-  startupProbe:
-    enabled: true
-    #150秒启动时间
-    httpGet:
-      path: /actuator/health
-      port: http
-    failureThreshold: 30
-    periodSeconds: 4
+  backend:
+    # 容器启动检查探针
+    startupProbe:
+      enabled: true
+      #150秒启动时间
+      httpGet:
+        path: /actuator/health
+        port: http
+      failureThreshold: 30
+      periodSeconds: 4
 
-  # 容器存活检查探针
-  livenessProbe:
-    enabled: true
-    #1分钟4次,3次失败重启
-    httpGet:
-      path: /actuator/health
-      port: http
-    timeoutSeconds: 5
-    periodSeconds: 10
+    # 容器存活检查探针
+    livenessProbe:
+      enabled: true
+      #1分钟4次,3次失败重启
+      httpGet:
+        path: /actuator/health
+        port: http
+      timeoutSeconds: 3
+      periodSeconds: 15
   
-  # 容器就绪检查探针,3次失败Service停止分发
-  readinessProbe:
-    enabled: false
-    #1分钟4次
-    httpGet:
-      path: /actuator/health
-      port: http
-    timeoutSeconds: 5
-    periodSeconds: 10
+    # 容器就绪检查探针,3次失败Service停止分发
+    readinessProbe:
+      enabled: false
+      #1分钟4次
+      httpGet:
+        path: /actuator/health
+        port: http
+      timeoutSeconds: 3
+      periodSeconds: 15
+
+  frontend:
+    # 容器启动检查探针
+    startupProbe:
+      enabled: true
+      #15秒启动时间
+      httpGet:
+        path: /nginx_status
+        port: http
+      failureThreshold: 5
+      periodSeconds: 2
+
+    # 容器存活检查探针
+    livenessProbe:
+      enabled: true
+      #1分钟4次,3次失败重启
+      httpGet:
+        path: /nginx_status
+        port: http
+      timeoutSeconds: 3
+      periodSeconds: 15
+  
+    # 容器就绪检查探针,3次失败Service停止分发
+    readinessProbe:
+      enabled: false
+      #1分钟4次
+      httpGet:
+        path: /nginx_status
+        port: http
+      timeoutSeconds: 3
+      periodSeconds: 15
   
 
   # 自定义容器启动检查探针
@@ -207,7 +239,7 @@ autoscaling:
   # 最大副本数
   maxReplicas: 3
   # 内存指标值
-  targetMemory: 70
+  targetMemory: 75
 
 # 链路追踪
 skyWalking:
