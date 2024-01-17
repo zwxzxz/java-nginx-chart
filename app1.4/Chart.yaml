@@ -1,8 +1,8 @@
 apiVersion: v2
-name: app
+name: app1.4
 version: 1.4.0
 
-description: nginx服务或者jar包的Helm chart
+description: nginx或者java的Helm chart,1.4
 type: application
 keywords:
   - spring boot
