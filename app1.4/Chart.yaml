@@ -1,5 +1,5 @@
 apiVersion: v2
-name: app1.4
+name: app
 version: 1.4.0
 
 description: nginx服务或者jar包的Helm chart
