@@ -1,5 +1,5 @@
 # 是否前端应用(是输入true)
-isFrontend: 1
+isFrontend: 
 # 应用名(必填!!!)
 name: vbooster-auth
 # 镜像信息
