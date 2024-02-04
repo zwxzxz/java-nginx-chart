@@ -1,4 +1,4 @@
-{{- if .Values.autoscaling.enabled}}
+{{- if and .Values.autoscaling.enabled (not .Values.isFrontend)}}
 apiVersion: {{ include "common.capabilities.hpa.apiVersion" ( dict "context" $ ) }}
 kind: HorizontalPodAutoscaler
 metadata:

@@ -1,5 +1,5 @@
 # 是否前端应用(是输入true)
-isFrontend: 
+isFrontend: 1
 # 应用名(必填!!!)
 name: vbooster-auth
 # 镜像信息
@@ -12,19 +12,16 @@ image:
 # 创建service(关注应用是否有需求,一般只需gateway和前端需要)
 createService: 
 
-containerPort: 7401
-
-
 # 挂载
 mount:
   # 容器内挂载地址(不挂载设置[]或者为空)
   volumeMounts: 
-    # - name: volume-platforms-statics
+    # - name: volume-statics
     #   mountPath: /data
     #   readOnly: true
   # 卷
   volumes: 
-    # - name: volume-platforms-statics
+    # - name: volume-statics
     #   nfs:
     #     path: /data/nfs_k8s/platforms/dataPlatform
     #     server: k8s-master
@@ -33,9 +30,7 @@ mount:
 autoscaling:
   enabled: 
 
-nodeName: k8s-node2
-
 # 链路追踪
 skyWalking:
-  enabled: 1
+  enabled: 
   oapAdd: 172.16.21.127:11800
