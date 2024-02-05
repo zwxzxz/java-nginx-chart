@@ -168,6 +168,9 @@ spec:
       {{- end }}
       dnsPolicy: {{ .Values.dnsPolicy }}
       restartPolicy: {{ .Values.restartPolicy }}
+      {{- if .Values.schedulerName }}
+      schedulerName: {{ .Values.schedulerName }}
+      {{- end }}
       hostNetwork: {{ .Values.hostNetwork }}
       {{- if or .Values.mount.volumes (and .Values.skyWalking.enabled (not .Values.isFrontend)) }}
       volumes:

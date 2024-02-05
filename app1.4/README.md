@@ -3,8 +3,14 @@
 ## 1.4.0
 
 - 优化探针：
-    - 更新后端保活策略（单服务：保活http, 集群：保活tcp+就绪http）,我们项目以单服务为主
-    - 新增前端保活策略（单服务：保活http, 集群：保活tcp+就绪http）,我们项目以单服务为主
+    - ~~更新后端保活策略（单服务：保活http, 集群：保活tcp+就绪http）,我们项目以单服务为主~~
+
+      更新后端保活策略（保活tcp+就绪http）
+
+    - ~~新增前端保活策略（单服务：保活http, 集群：保活tcp+就绪http）,我们项目以单服务为主~~
+      
+      新增前端保活策略（保活tcp+就绪http）
+      
       nginx_status接口获取nginx连接数等信息，启动探针15秒，存活探针1分钟4次
 - 链路追踪：增加skywalking，使用hostPath映射agent.jar（ansible配合分发）
 - JVM使用容器内存的最大百分比调整：70 --> 75
@@ -20,6 +26,7 @@
      - dns策略
      - dns配置
      - 更新策略
+     - 调度器
 
 ## 1.3.0
 
@@ -184,15 +191,15 @@ helm list -n 命名空间
 | probe.backend.startupProbe.enabled                           | true                                                         | 后端启动探针开关                                 |
 | probe.backend.startupProbe.内容                              | httpGet:<br />  path: /actuator/health<br />  port: http<br />failureThreshold: 30<br />periodSeconds: 4 | 后端启动探针内容                                 |
 | probe.backend.livenessProbe.enabled                          | true                                                         | 后端存活探针开关                                 |
-| probe.backend.livenessProbe.内容                             | httpGet:<br />  path: /actuator/health<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15 | 后端存活探针内容                                 |
-| probe.backend.readinessProbe.enabled                         | false                                                        | 后端就绪探针开关                                 |
+| probe.backend.livenessProbe.内容                             | tcpSocket:<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15 | 后端存活探针内容                                 |
+| probe.backend.readinessProbe.enabled                         | true                                                         | 后端就绪探针开关                                 |
 | probe.backend.readinessProbe.内容                            | httpGet:<br />  path: /actuator/health<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15 | 后端存活探针内容                                 |
 | probe.frontend.enabled                                       | true                                                         | 前端探针总开关                                   |
 | probe.frontend.startupProbe.enabled                          | true                                                         | 前端启动探针开关                                 |
 | probe.frontend.startupProbe.内容                             | httpGet:<br />  path: /nginx_status<br />  port: http<br />failureThreshold: 5<br />periodSeconds: 2 | 前端启动探针内容                                 |
 | probe.frontend.livenessProbe.enabled                         | true                                                         | 前端存活探针开关                                 |
-| probe.frontend.livenessProbe.内容                            | httpGet:<br />  path: /nginx_status<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15 | 前端存活探针内容                                 |
-| probe.frontend.readinessProbe.enabled                        | false                                                        | 前端就绪探针开关                                 |
+| probe.frontend.livenessProbe.内容                            | tcpSocket:<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15<br /> | 前端存活探针内容                                 |
+| probe.frontend.readinessProbe.enabled                        | true                                                         | 前端就绪探针开关                                 |
 | probe.frontend.readinessProbe.内容                           | httpGet:<br />  path: /nginx_status<br />  port: http<br />timeoutSeconds: 3<br />periodSeconds: 15 | 前端存活探针内容                                 |
 | probe.customStartupProbe                                     |                                                              | 自定义容器启动检查探针                           |
 | probe.customLivenessProbe                                    |                                                              | 自定义容器存活检查探针                           |
@@ -211,6 +218,7 @@ helm list -n 命名空间
 | nodeSelector                                                 |                                                              | 节点标签选择部署节点                             |
 | nodeName                                                     |                                                              | 节点名称选择部署节点                             |
 | restartPolicy                                                | Always                                                       | 重启策略                                         |
+| schedulerName                                                |                                                              | 调度器名称                                       |
 | hostNetwork                                                  | false                                                        | 使用主机网络                                     |
 | dnsPolicy                                                    | ClusterFirst                                                 | DNS策略                                          |
 | dnsConfig                                                    |                                                              | dns配置                                          |

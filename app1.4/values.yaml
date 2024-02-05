@@ -130,15 +130,14 @@ probe:
     livenessProbe:
       enabled: true
       #1分钟4次,3次失败重启
-      httpGet:
-        path: /actuator/health
+      tcpSocket:
         port: http
       timeoutSeconds: 3
       periodSeconds: 15
-  
+
     # 容器就绪检查探针,3次失败Service停止分发
     readinessProbe:
-      enabled: false
+      enabled: true
       #1分钟4次
       httpGet:
         path: /actuator/health
@@ -164,15 +163,14 @@ probe:
     livenessProbe:
       enabled: true
       #1分钟4次,3次失败重启
-      httpGet:
-        path: /nginx_status
+      tcpSocket:
         port: http
       timeoutSeconds: 3
       periodSeconds: 15
   
     # 容器就绪检查探针,3次失败Service停止分发
     readinessProbe:
-      enabled: false
+      enabled: true
       #1分钟4次
       httpGet:
         path: /nginx_status
@@ -295,6 +293,9 @@ nodeName:
 
 # 重启策略
 restartPolicy: Always
+
+# 调度器
+schedulerName: 
 
 # 使用主机网络
 hostNetwork: false

@@ -28,9 +28,9 @@ mount:
 
 # 自动扩缩容
 autoscaling:
-  enabled: 
+  enabled: 1
 
 # 链路追踪
 skyWalking:
-  enabled: 
+  enabled: 1
   oapAdd: 172.16.21.127:11800
