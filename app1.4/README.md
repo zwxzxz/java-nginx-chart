@@ -2,6 +2,18 @@
 
 ## 1.4.0
 
+### 2024/2/28
+
+- 修改bug：资源限制只配置limit，导致request默认等于limit，继而出现无法调度问题
+
+  ```txt
+  0/4 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 3 Insufficient memory. preemption: 0/4 nodes are available: 1 Preemption is not helpful for scheduling, 3 No preemption victims found for incoming pod..
+  ```
+
+  修改资源限制只为后端使用，设置requests.memory=256Mi，hpa扩容内存指标为targetMemory=300（256*3）
+
+### 以前
+
 - 优化探针：
     - ~~更新后端保活策略（单服务：保活http, 集群：保活tcp+就绪http）,我们项目以单服务为主~~
 

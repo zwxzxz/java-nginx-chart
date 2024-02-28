@@ -97,7 +97,7 @@ resources:
   # 请求资源(不使用设置{}或者为空)
   requests: 
     cpu: 30m
-    # memory: 256Mi
+    memory: 256Mi
   # 限制资源
   limits: 
     # cpu: 200m
@@ -240,7 +240,7 @@ autoscaling:
   # 最大副本数
   maxReplicas: 3
   # 内存指标值
-  targetMemory: 75
+  targetMemory: 300
 
 # 链路追踪
 skyWalking:

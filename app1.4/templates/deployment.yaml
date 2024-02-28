@@ -67,12 +67,12 @@ spec:
         {{- include "common.tplvalues.render" (dict "value" .Values.env "context" $) | nindent 8 }}
         {{- end }}
 
-        {{- if and .Values.resources (or .Values.resources.requests .Values.resources.limits ) }}
+        {{- if and .Values.resources (or .Values.resources.requests .Values.resources.limits ) (not .Values.isFrontend)  }}
         resources: 
           {{- if .Values.resources.requests }}
           requests: {{- toYaml .Values.resources.requests | nindent 12 }}
           {{- end }}
-          {{- if and .Values.resources.limits (not .Values.isFrontend) }}
+          {{- if and .Values.resources.limits }}
           limits: {{- toYaml .Values.resources.limits | nindent 12 }}
           {{- end }}
         {{- end }}
